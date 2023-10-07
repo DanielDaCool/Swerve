@@ -14,10 +14,15 @@ public class Motor {
     public void setVelocity(double V){
         velocity = V;
     }
+    public double getVelocity(){
+        return velocity;
+    }
+    public void setPosition(double pulses){
+        this.pulses = pulses;
+    }
 
     public void update(){
-        pulses += velocity  * countPerMeter * cycleTime;
-        System.out.println("MOTOR VELOCITY: " + velocity);
+        pulses += velocity * countPerMeter * cycleTime;
     }
 
 
