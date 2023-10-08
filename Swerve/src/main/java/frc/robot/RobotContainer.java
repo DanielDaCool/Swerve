@@ -7,13 +7,13 @@ import frc.robot.commands.Drive;
 import frc.robot.commands.DriveToPoint;
 import frc.robot.commands.Test;
 import frc.robot.subsystems.Chassis;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
 public class RobotContainer {
-  XboxController driverController = new XboxController(DriverControllerPort);
+  CommandXboxController driverController = new CommandXboxController(DriverControllerPort);
   Chassis chassis = new Chassis();
   Test test = new Test(chassis);
   Drive drive = new Drive(chassis, driverController);
@@ -25,8 +25,8 @@ public class RobotContainer {
 
 
   public RobotContainer() {
-    chassis.setDefaultCommand(driveToPoint);
-    SmartDashboard.putData(driveToPoint);
+    chassis.setDefaultCommand(drive);
+    SmartDashboard.putData(drive);
     
     
 
@@ -35,7 +35,7 @@ public class RobotContainer {
 
 
   private void configureBindings() {
-
+    driverController.a().onTrue(driveToPoint);
     
 
 

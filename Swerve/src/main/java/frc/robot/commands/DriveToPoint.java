@@ -8,7 +8,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import static frc.robot.Constants.*;
 
 import frc.robot.Util.Trapezoid;
 //import frc.robot.Util.Trapezoid;
@@ -85,13 +84,9 @@ public class DriveToPoint extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    if (pose.getTranslation().getDistance(translationFinal) <= 0.20){
+    if (pose.getTranslation().getDistance(translationFinal) <= 0.20 && wantedAngle.minus(pose.getRotation()).getDegrees() <= 5){
       
-      if (wantedAngle.minus(pose.getRotation()).getDegrees() <= 5){
-        
-        return true;
-      }
-      return false;
+      return true;
     }
     return false;
     

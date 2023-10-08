@@ -2,19 +2,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Chassis;
 
 public class Drive extends CommandBase {
   Chassis chassis;
-  XboxController controller;
+  CommandXboxController controller;
   double x;
   double y;
   double rotation;
   
 
-  public Drive(Chassis chassis, XboxController controller) {
+  public Drive(Chassis chassis, CommandXboxController controller) {
 
     this.chassis = chassis;
     this.controller = controller;
