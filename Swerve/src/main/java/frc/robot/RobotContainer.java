@@ -1,26 +1,24 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
+import static frc.robot.Constants.*;
+
 import frc.robot.commands.Drive;
 import frc.robot.commands.Test;
 import frc.robot.subsystems.Chassis;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 
 public class RobotContainer {
-  XboxController controller = new XboxController(OperatorConstants.kDriverControllerPort);
+  XboxController driverController = new XboxController(DriverControllerPort);
   Chassis chassis = new Chassis();
   Test test = new Test(chassis);
-  Drive drive = new Drive(chassis, controller);
+  Drive drive = new Drive(chassis, driverController);
 
 
 
-  private final CommandXboxController driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  
 
 
   public RobotContainer() {
