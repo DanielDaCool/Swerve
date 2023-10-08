@@ -28,9 +28,9 @@ public class Drive extends CommandBase {
   @Override
   public void execute() {
     x = controller.getRawAxis(0);
-    y = controller.getRawAxis(1);
+    y = -controller.getRawAxis(1);
     rotation = controller.getRightX();
-    ChassisSpeeds speeds = new ChassisSpeeds(x, y, rotation);
+    ChassisSpeeds speeds = new ChassisSpeeds(x * 2, y * 2, rotation);
     chassis.setVelocity(speeds);
   }
 
