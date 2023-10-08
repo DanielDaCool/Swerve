@@ -30,7 +30,7 @@ public final class Constants {
     }
   }
 
-  public static final double countPerMeter = 51330.6021;
+  public static final double countPerMeter = 1;
   public static final double degreesPerSecond = 270;
   public static final double pulsesPerDegree = 1;
 

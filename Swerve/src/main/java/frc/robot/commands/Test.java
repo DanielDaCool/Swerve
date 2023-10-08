@@ -1,6 +1,5 @@
 
 package frc.robot.commands;
-
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -13,9 +12,12 @@ public class Test extends CommandBase {
   Chassis chassis;
   double vx;
   double vy;
+  int i = 0;
   double rotationSpeed;
   public Test(Chassis chassis) {
     this.chassis = chassis;
+    addRequirements(chassis);
+
     SmartDashboard.putData(this);
 
 
@@ -24,18 +26,12 @@ public class Test extends CommandBase {
   @Override
   public void initialize() {}
 
-  @Override
-  public void initSendable(SendableBuilder builder) {
-    builder.addDoubleProperty("Wanted Rotation Speed", () -> rotationSpeed, (rotationSpeed) -> this.rotationSpeed = rotationSpeed);
-    builder.addDoubleProperty("Wanted vy", () -> vy, (vy) -> this.vy = vy);
-    builder.addDoubleProperty("Wanted vx", () -> vx, (vx) -> this.vx = vx);
-  }
 
   @Override
   public void execute() {
-    ChassisSpeeds speeds = new ChassisSpeeds(3, 0, 0);
+    ChassisSpeeds speeds = new ChassisSpeeds(3, 3, 0.5);
     chassis.setVelocity(speeds);
-    
+    i++;
   }
 
 
@@ -46,6 +42,9 @@ public class Test extends CommandBase {
 
   @Override
   public boolean isFinished() {
+    if (i > 300){
+      return true;
+    }
     return false;
   }
 }

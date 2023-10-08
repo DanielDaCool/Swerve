@@ -2,16 +2,20 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Drive;
 import frc.robot.commands.Test;
 import frc.robot.subsystems.Chassis;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 
 public class RobotContainer {
-  Chassis chassis;
+  XboxController controller = new XboxController(OperatorConstants.kDriverControllerPort);
+  Chassis chassis = new Chassis();
   Test test = new Test(chassis);
+  Drive drive = new Drive(chassis, controller);
 
 
 
@@ -20,6 +24,8 @@ public class RobotContainer {
 
 
   public RobotContainer() {
+    chassis.setDefaultCommand(drive);
+    
 
     configureBindings();
   }
@@ -27,13 +33,15 @@ public class RobotContainer {
 
   private void configureBindings() {
 
+    
+
+
 
 
   }
 
 
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
     return test;
   }
 }
