@@ -41,7 +41,8 @@ public class Chassis extends SubsystemBase{
     }
 
     public void stop() {
-        Arrays.stream(modules).forEach(SwerveModule::stop);
+        for (SwerveModule module : modules) module.stop();
+        gyro.setVelocity(0);
     }
 
     public void setVelocity(ChassisSpeeds speed) {

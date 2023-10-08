@@ -9,6 +9,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/DriveToPoint": "Command",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Test": "Command",
       "/SmartDashboard/driveToPoint": "Command"
@@ -29,14 +30,17 @@
   "NetworkTables": {
     "transitory": {
       "SmartDashboard": {
+        "DriveToPoint": {
+          "open": true
+        },
         "Field": {
+          "open": true
+        },
+        "Test": {
           "open": true
         },
         "open": true
       }
     }
-  },
-  "NetworkTables View": {
-    "visible": false
   }
 }

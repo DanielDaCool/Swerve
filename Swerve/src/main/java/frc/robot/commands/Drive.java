@@ -15,8 +15,10 @@ public class Drive extends CommandBase {
   
 
   public Drive(Chassis chassis, XboxController controller) {
+
     this.chassis = chassis;
     this.controller = controller;
+    addRequirements(chassis);
   }
 
 
@@ -34,7 +36,9 @@ public class Drive extends CommandBase {
 
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    chassis.stop();
+  }
 
 
   @Override
