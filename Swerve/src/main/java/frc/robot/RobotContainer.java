@@ -5,6 +5,7 @@ import static frc.robot.Constants.*;
 
 import frc.robot.commands.Drive;
 import frc.robot.commands.DriveToPoint;
+import frc.robot.commands.Route;
 import frc.robot.commands.Test;
 import frc.robot.subsystems.Chassis;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,7 +18,10 @@ public class RobotContainer {
   Chassis chassis = new Chassis();
   Test test = new Test(chassis);
   Drive drive = new Drive(chassis, driverController);
-  DriveToPoint driveToPoint = new DriveToPoint(chassis);
+  Route route = new Route(chassis);
+
+
+  
 
 
 
@@ -35,7 +39,7 @@ public class RobotContainer {
 
 
   private void configureBindings() {
-    driverController.a().onTrue(driveToPoint);
+    driverController.a().onTrue(route);
     
 
 

@@ -30,8 +30,11 @@ public class DriveToPoint extends CommandBase {
   Trapezoid trap = new Trapezoid(wantedAccel, maxVelocity);
 
 
-  public DriveToPoint(Chassis chassis) {
+  public DriveToPoint(Chassis chassis, double wantedX, double wantedY, Rotation2d wantedAngle) {
     this.chassis = chassis;
+    this.wantedX = wantedX;
+    this.wantedY = wantedY;
+    this.wantedAngle = wantedAngle;
     addRequirements(chassis);
     SmartDashboard.putData(this);
 
@@ -39,16 +42,6 @@ public class DriveToPoint extends CommandBase {
 
   }
 
-  @Override
-  public void initSendable(SendableBuilder builder) {
-    builder.addDoubleProperty("wanted X", () -> wantedX , (wantedX) -> this.wantedX = wantedX);
-    builder.addDoubleProperty("wanted Y", () -> wantedY , (wantedY) -> this.wantedY = wantedY);
-    builder.addDoubleProperty("wanted Angle", () -> wantedAngle.getDegrees() , (wantedAngle) -> this.wantedAngle = Rotation2d.fromDegrees(wantedAngle));
-    builder.addDoubleProperty("wanted Accel", () -> wantedAccel , (wantedAccel) -> this.wantedAccel = wantedAccel);
-    builder.addDoubleProperty("wanted Velo", () -> maxVelocity , (maxVelocity) -> this.maxVelocity = maxVelocity);
-
-
-  }
 
   @Override
   public void initialize() {
