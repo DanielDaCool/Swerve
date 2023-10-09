@@ -20,9 +20,8 @@ public class DriveToPoint extends CommandBase {
   Rotation2d wantedAngle = new Rotation2d();
   double remainingDistance;
   Pose2d pose = new Pose2d();
-  //double driveSpeed = 3;
-  double maxVelocity;
-  double wantedAccel;
+  double maxVelocity = 2;
+  double wantedAccel = 4;
   Translation2d translationFinal = new Translation2d();
 
   Trapezoid driveTrapezoid = new Trapezoid(wantedAccel, maxVelocity);
