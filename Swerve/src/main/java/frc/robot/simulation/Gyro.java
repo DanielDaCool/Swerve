@@ -16,7 +16,7 @@ public class Gyro {
     }
 
     public void update(){
-        angle += velocity;
+        angle += velocity * 0.02;
     }
 
 

@@ -5,6 +5,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Chassis;
+import static frc.robot.Constants.*;
 
 public class Drive extends CommandBase {
   Chassis chassis;
@@ -30,7 +31,7 @@ public class Drive extends CommandBase {
     x = controller.getRawAxis(0);
     y = -controller.getRawAxis(1);
     rotation = controller.getRightX();
-    ChassisSpeeds speeds = new ChassisSpeeds(x * 2, y * 2, rotation);
+    ChassisSpeeds speeds = new ChassisSpeeds(x * 2, y * 2, rotation * degreesPerSecond);
     chassis.setVelocity(speeds);
   }
 
