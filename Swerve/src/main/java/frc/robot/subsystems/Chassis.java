@@ -14,19 +14,24 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.util.SwerveModule;
 import frc.robot.simulation.Gyro;
 import static frc.robot.Constants.SwerveChassisConstants.*;
+import edu.wpi.first.wpilibj.Timer;
 
 import java.util.Arrays;
+
 
 
 public class Chassis extends SubsystemBase{
     private Gyro gyro;
     private SwerveModule[] modules;
+
+    private Timer timer = new Timer();
     
     private SwerveDrivePoseEstimator poseEstimator;
     Field2d fieldPosition;
 
     public Chassis(){
         gyro = new Gyro();
+
         
         modules = new SwerveModule[]{
           new SwerveModule(), // LFront
@@ -35,14 +40,25 @@ public class Chassis extends SubsystemBase{
           new SwerveModule() // RBack
         };
 
+
         fieldPosition = new Field2d();
         poseEstimator = new SwerveDrivePoseEstimator(KINEMATICS, getAngle(), getModulePositions(), new Pose2d());
         SmartDashboard.putData(fieldPosition);
+        timer.start();
+
     }
 
     public void stop() {
         for (SwerveModule module : modules) module.stop();
         gyro.setVelocity(0);
+    }
+
+    public void setDriveVelocity(double velocity) {
+        Arrays.stream(modules).forEach((module) -> module.setVelocity(velocity));
+    }
+
+    public void setWheelAngles(double x) {
+        Arrays.stream(modules).forEach((module) -> module.setAngle(Rotation2d.fromDegrees(x)));
     }
 
     public void setVelocity(ChassisSpeeds speed) {
@@ -83,6 +99,10 @@ public class Chassis extends SubsystemBase{
 
         poseEstimator.update(getAngle(), getModulePositions());
         fieldPosition.setRobotPose(poseEstimator.getEstimatedPosition());
+    }
+
+    public double getTime(){
+        return timer.get();
     }
 
 
