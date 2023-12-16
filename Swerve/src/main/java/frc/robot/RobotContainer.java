@@ -3,6 +3,12 @@ package frc.robot;
 
 import static frc.robot.Constants.*;
 
+import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import frc.robot.commands.Drive;
 import frc.robot.commands.DriveToPoint;
 import frc.robot.commands.PathFollower;
@@ -31,6 +37,10 @@ public class RobotContainer {
 
   }
   public Command getAutonomousCommand() {
-    return PathFollower.test(chassis, "deploy/pathplanner/generatedJSON/TEST.wpilib.json");
+    PathPlannerPath path = PathPlannerPath.fromPathFile("New Path");
+    System.out.println("-----------------------------------");
+    System.out.println(path);
+    HolonomicPathFollowerConfig config = new HolonomicPathFollowerConfig(new PIDConstants(0.5), new PIDConstants(0.5), 4, 1, new ReplanningConfig());
+    return new FollowPathHolonomic(path, chassis::getPose, chassis::getSpeeds, chassis::setVelocity, config, chassis);
   }
 }
