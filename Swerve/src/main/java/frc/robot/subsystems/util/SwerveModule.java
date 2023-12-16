@@ -10,6 +10,7 @@ import static frc.robot.Constants.*;
 public class SwerveModule {
     private Motor angleMotor;
     private Motor moveMotor;
+    public SwerveModuleState state;
     public SwerveModule(){
         angleMotor = new Motor();
         moveMotor = new Motor();
@@ -33,10 +34,17 @@ public class SwerveModule {
     public Rotation2d getAngle() {
         return Rotation2d.fromDegrees(angleMotor.getDistance());
     }
+    
     public void setState(SwerveModuleState state) {
+        this.state = state;
         setVelocity(state.speedMetersPerSecond);
         setAngle(state.angle);
     }
+
+    public SwerveModuleState getState(){
+        return state;
+    }
+    
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(getDistance(), getAngle());
     }

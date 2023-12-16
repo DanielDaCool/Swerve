@@ -88,6 +88,14 @@ public class Chassis extends SubsystemBase{
         return Rotation2d.fromDegrees(gyro.getAngle());
     }
     
+    public ChassisSpeeds getSpeeds(){
+        return KINEMATICS.toChassisSpeeds();
+    }
+
+    public SwerveModuleState[] getModuleState(){
+        return Arrays.stream(modules).map(SwerveModule::getState).toArray(SwerveModuleState[]::new);
+
+    }
     public SwerveModulePosition[] getModulePositions() {
         return Arrays.stream(modules).map(SwerveModule::getPosition).toArray(SwerveModulePosition[]::new);
     }

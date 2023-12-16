@@ -5,7 +5,7 @@ import static frc.robot.Constants.*;
 
 import frc.robot.commands.Drive;
 import frc.robot.commands.DriveToPoint;
-import frc.robot.commands.PathFollow;
+import frc.robot.commands.PathFollower;
 import frc.robot.commands.Route;
 import frc.robot.commands.Test;
 import frc.robot.subsystems.Chassis;
@@ -23,30 +23,14 @@ public class RobotContainer {
   Chassis chassis = new Chassis();
   Test test = new Test(chassis);
   Drive drive = new Drive(chassis, driverController);
-  PathFollow pathFollow = new PathFollow(chassis, "deploy/pathplanner/generatedJSON/TEST.wpilib.json");
-
-
-
-
-
   
-
-
-
-  
-
 
   public RobotContainer() {
-    chassis.setDefaultCommand(drive);
+    
     SmartDashboard.putData(drive);
 
   }
-
-
-
-
-
   public Command getAutonomousCommand() {
-    return pathFollow;
+    return PathFollower.test(chassis, "deploy/pathplanner/generatedJSON/TEST.wpilib.json");
   }
 }
