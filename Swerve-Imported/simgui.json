@@ -1,0 +1,10 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Drive": "Command",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Test": "Command"
+    }
+  }
+}
