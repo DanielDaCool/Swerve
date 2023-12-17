@@ -28,6 +28,6 @@ public class PathFollower {
         PathPlannerPath path = PathPlannerPath.fromPathFile("New Path");
         System.out.println("-----------------------------------");
         System.out.println(path);
-        return new FollowPathHolonomic(path, thisChassis::getPose, thisChassis::getSpeeds, thisChassis::setVelocity, config, thisChassis);
+        return new FollowPathHolonomic(path, thisChassis::getPose, thisChassis::getRobotRelativeSpeed, thisChassis::setVelocity, config, thisChassis);
     }
 }

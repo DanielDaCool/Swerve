@@ -1,57 +1,89 @@
-
 package frc.robot.subsystems.util;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.simulation.Motor;
+
 import static frc.robot.Constants.*;
 
 public class SwerveModule {
-    private Motor angleMotor;
     private Motor moveMotor;
-    public SwerveModuleState state;
-    public SwerveModule(){
-        angleMotor = new Motor();
+    private Motor angleMotor;
+
+    public SwerveModule() {
         moveMotor = new Motor();
+        angleMotor = new Motor();
     }
-    public void stop(){
-        angleMotor.setVelocity(0);
+
+    /**
+     * Forces the module to completely stop
+     */
+    public void stop() {
         moveMotor.setVelocity(0);
+        angleMotor.setVelocity(0);
     }
+
+    /**
+     * Sets the move velocity of the module
+     * @param v Velocity in m/s
+     */
     public void setVelocity(double v) {
-        moveMotor.setVelocity(v);
+        moveMotor.setVelocity(v * countPerMeter / 10);
     }
+
+    /**
+     * Returns the move velocity of the module
+     * @return Velocity in m/s
+     */
     public double getVelocity() {
-        return moveMotor.getVelocity();
+        return moveMotor.getVelocity() / countPerMeter * 10;
     } 
-    public double getDistance(){
+
+    /**
+     * Returns the distance the module drove
+     * @return Distance in encoder pulses
+     */
+    public double getDistance() {
         return moveMotor.getDistance();
     }
+
+    /**
+     * Sets the angle of the module
+     * @param angle
+     */
     public void setAngle(Rotation2d angle) {
         angleMotor.setPosition(calculateTarget(angle.getDegrees()));
     }
+
     public Rotation2d getAngle() {
-        return Rotation2d.fromDegrees(angleMotor.getDistance());
+        return Rotation2d.fromDegrees(angleMotor.getDistance() / pulsesPerDegree);
     }
-    
+
+    /**
+     * Sets the state of the module (drive speed and angle)
+     * @param state
+     */
     public void setState(SwerveModuleState state) {
-        this.state = state;
         setVelocity(state.speedMetersPerSecond);
         setAngle(state.angle);
     }
 
-    public SwerveModuleState getState(){
-        return state;
-    }
-    
+    /**
+     * Returns the position state of the module
+     */
     public SwerveModulePosition getPosition() {
-        return new SwerveModulePosition(getDistance(), getAngle());
+        return new SwerveModulePosition(getDistance() / countPerMeter, getAngle());
     }
+
+     /**
+      * Updates the simulation motors
+      */
     public void update() {
         moveMotor.update();
         angleMotor.update();
     }
+
     public static double getAngleDifference(double current, double target) {
         double difference = (target - current) % 360;
         return difference - ((int)difference / 180) * 360;

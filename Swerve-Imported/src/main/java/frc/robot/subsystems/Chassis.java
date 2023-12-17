@@ -1,4 +1,3 @@
-
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -11,108 +10,77 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.util.SwerveModule;
 import frc.robot.simulation.Gyro;
-import static frc.robot.Constants.SwerveChassisConstants.*;
-import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.util.SwerveModule;
 
 import java.util.Arrays;
 
+import static frc.robot.Constants.SwerveChassisConstants.*;
 
+public class Chassis extends SubsystemBase {
+    private final SwerveModule[] modules;
+    private final Gyro gyro;
 
-public class Chassis extends SubsystemBase{
-    private Gyro gyro;
-    private SwerveModule[] modules;
+    private final SwerveDrivePoseEstimator poseEstimator;
+    private final Field2d field;
 
-    private Timer timer = new Timer();
-    
-    private SwerveDrivePoseEstimator poseEstimator;
-    Field2d fieldPosition;
-
-    public Chassis(){
+    public Chassis() {
+        modules = new SwerveModule[] {
+                new SwerveModule(), // front left
+                new SwerveModule(), // front right
+                new SwerveModule(), // back left
+                new SwerveModule() // back right
+        };
         gyro = new Gyro();
 
-        
-        modules = new SwerveModule[]{
-          new SwerveModule(), // LFront
-          new SwerveModule(), // RFront
-          new SwerveModule(), // LBack
-          new SwerveModule() // RBack
-        };
-
-
-        fieldPosition = new Field2d();
         poseEstimator = new SwerveDrivePoseEstimator(KINEMATICS, getAngle(), getModulePositions(), new Pose2d());
-        SmartDashboard.putData(fieldPosition);
-        timer.start();
-
+        field = new Field2d();
+        SmartDashboard.putData(field);
     }
 
     public void stop() {
-        for (SwerveModule module : modules) module.stop();
-        gyro.setVelocity(0);
+        Arrays.stream(modules).forEach(SwerveModule::stop);
     }
 
-    public void setDriveVelocity(double velocity) {
-        Arrays.stream(modules).forEach((module) -> module.setVelocity(velocity));
-    }
-
-    public void setWheelAngles(double x) {
-        Arrays.stream(modules).forEach((module) -> module.setAngle(Rotation2d.fromDegrees(x)));
-    }
-
-    public void setVelocity(ChassisSpeeds speed) {
-        ChassisSpeeds newSpeed = ChassisSpeeds.fromFieldRelativeSpeeds(speed.vxMetersPerSecond, speed.vyMetersPerSecond, speed.omegaRadiansPerSecond, getAngle());
-        SwerveModuleState[] states = KINEMATICS.toSwerveModuleStates(newSpeed);
+    public void setVelocity(ChassisSpeeds speeds) {
+        ChassisSpeeds newSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, getAngle());
+        SwerveModuleState[] states = KINEMATICS.toSwerveModuleStates(newSpeeds);
 
         for (int i = 0; i < 4; i++) modules[i].setState(states[i]);
-        gyro.setVelocity(Math.toDegrees(speed.omegaRadiansPerSecond));
+        gyro.setVelocity(Math.toDegrees(speeds.omegaRadiansPerSecond));
     }
 
-
-
-    public Pose2d getPose(){
-        return poseEstimator.getEstimatedPosition();
-    }
-
-    public Translation2d getVelocity() {
-        SwerveModuleState[] states = new SwerveModuleState[4];
-        for (int i = 0; i < 4; i++) {
-            states[i] = new SwerveModuleState(modules[i].getVelocity(), modules[i].getAngle());
-        }
-        ChassisSpeeds speeds = KINEMATICS.toChassisSpeeds(states);
-        return new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
+    public ChassisSpeeds getRobotRelativeSpeed(){
+        return ChassisSpeeds.fromFieldRelativeSpeeds(getVelocity(), getAngle());
     }
     
+    public ChassisSpeeds getVelocity() {
+        SwerveModuleState[] states = new SwerveModuleState[4];
+        for (int i = 0; i < 4; i++)
+            states[i] = new SwerveModuleState(modules[i].getVelocity(), modules[i].getAngle());
+
+        ChassisSpeeds speeds = KINEMATICS.toChassisSpeeds(states);
+        return speeds;
+    }
+
     public Rotation2d getAngle() {
         return Rotation2d.fromDegrees(gyro.getAngle());
     }
-    
-    public ChassisSpeeds getSpeeds(){
-        return KINEMATICS.toChassisSpeeds();
+
+    public Pose2d getPose() {
+        return poseEstimator.getEstimatedPosition();
     }
 
-    public SwerveModuleState[] getModuleState(){
-        return Arrays.stream(modules).map(SwerveModule::getState).toArray(SwerveModuleState[]::new);
-
-    }
     public SwerveModulePosition[] getModulePositions() {
         return Arrays.stream(modules).map(SwerveModule::getPosition).toArray(SwerveModulePosition[]::new);
     }
 
+    @Override
     public void periodic() {
-        
-        for (SwerveModule module : modules) module.update();
+        Arrays.stream(modules).forEach(SwerveModule::update);
         gyro.update();
 
         poseEstimator.update(getAngle(), getModulePositions());
-        fieldPosition.setRobotPose(poseEstimator.getEstimatedPosition());
+        field.setRobotPose(poseEstimator.getEstimatedPosition());
     }
-
-    public double getTime(){
-        return timer.get();
-    }
-
-
-
 }

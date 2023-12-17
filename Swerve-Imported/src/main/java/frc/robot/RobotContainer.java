@@ -10,9 +10,9 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import frc.robot.commands.Drive;
-import frc.robot.commands.DriveToPoint;
+
 import frc.robot.commands.PathFollower;
-import frc.robot.commands.Route;
+
 import frc.robot.commands.Test;
 import frc.robot.subsystems.Chassis;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -37,10 +37,6 @@ public class RobotContainer {
 
   }
   public Command getAutonomousCommand() {
-    PathPlannerPath path = PathPlannerPath.fromPathFile("New Path");
-    System.out.println("-----------------------------------");
-    System.out.println(path);
-    HolonomicPathFollowerConfig config = new HolonomicPathFollowerConfig(new PIDConstants(0.5), new PIDConstants(0.5), 4, 1, new ReplanningConfig());
-    return new FollowPathHolonomic(path, chassis::getPose, chassis::getSpeeds, chassis::setVelocity, config, chassis);
+    return PathFollower.test(chassis, "New Path");
   }
 }
